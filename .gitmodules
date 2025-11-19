@@ -1,0 +1,6 @@
+[submodule "include/include/webview"]
+	path = include/include/webview
+	url = https://github.com/webview/webview.git
+[submodule "include/webview"]
+	path = include/webview
+	url = https://github.com/webview/webview.git
