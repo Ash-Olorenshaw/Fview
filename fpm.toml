@@ -1,19 +1,32 @@
 name = "webview_test"
 version = "0.1.0"
-license = "license"
+license = "MIT"
 author = "Ash Olorenshaw"
 maintainer = "asholorenshaw@gmail.com"
 copyright = "Copyright 2025, Ash Olorenshaw"
+
+[library]
+source-dir = "src"
+include-dir = ["include/libs"]
+
 [build]
 auto-executables = true
 auto-tests = true
 auto-examples = true
 module-naming = false
+link = [ "webview" ]
+
 [install]
 library = false
 test = false
+
 [fortran]
 implicit-typing = false
 implicit-external = false
 source-form = "free"
 
+# LD_LIBRARY_PATH
+# LIBRARY_PATH
+
+[dependencies]
+stdlib = "*"

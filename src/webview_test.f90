@@ -36,6 +36,13 @@ module webview
       type(c_ptr), value :: w
     end subroutine
 
+    ! void webview_set_html(webview_t w, const char* title)
+    subroutine c_webview_set_html(w, html) bind(c, name='webview_set_html')
+      import :: c_ptr, c_char
+      type(c_ptr),            value :: w
+      character(kind=c_char)        :: html(*)
+    end subroutine
+
     ! void webview_set_title(webview_t w, const char* title)
     subroutine c_webview_set_title(w, title) bind(c, name='webview_set_title')
       import :: c_ptr, c_char
@@ -78,5 +85,11 @@ contains
     type(c_ptr),      intent(in) :: w
     character(len=*), intent(in) :: url
     call c_webview_navigate(w, trim(url)//c_null_char)
+  end subroutine
+
+  subroutine webview_set_html(w, html)
+    type(c_ptr),      intent(in) :: w
+    character(len=*), intent(in) :: html
+    call c_webview_set_html(w, html//c_null_char)
   end subroutine
 end module webview
