@@ -6,7 +6,7 @@ run:
 		npm run build
 
 	LIBRARY_PATH="${PWD}/libs:${LIBRARY_PATH}" fpm build
-	LD_LIBRARY_PATH="${PWD}/libs:${LD_LIBRARY_PATH}" fpm run
+	fpm run
 
 build: 
 	@cd ./src/static/; \
