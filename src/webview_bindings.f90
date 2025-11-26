@@ -1,4 +1,3 @@
-! webview.f90 – minimal ISO_C_BINDING interface to https://github.com/webview/webview
 module webview
     use, intrinsic :: iso_c_binding
     implicit none
@@ -64,23 +63,22 @@ module webview
             character(kind=c_char) :: url(*)
         end subroutine
     end interface
-
 contains
-    subroutine webview_create_f(debug, w)
+    subroutine webview_create(debug, w)
         logical, intent(in) :: debug
         type(c_ptr), intent(out) :: w
 
         w = c_webview_create(merge(1, 0, debug), c_null_ptr)
     end subroutine
 
-    subroutine webview_set_title_f(w, title)
+    subroutine webview_set_title(w, title)
         type(c_ptr), intent(in) :: w
         character(len=*), intent(in) :: title
 
         call c_webview_set_title(w, trim(title)//c_null_char)
     end subroutine
 
-    subroutine webview_navigate_f(w, url)
+    subroutine webview_navigate(w, url)
         type(c_ptr), intent(in) :: w
         character(len=*), intent(in) :: url
 
