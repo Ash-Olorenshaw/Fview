@@ -6,7 +6,7 @@ run:
 		npm run build
 
 	LIBRARY_PATH="${PWD}/libs:${LIBRARY_PATH}" fpm build
-	fpm run
+	export WEBKIT_DISABLE_DMABUF_RENDERER=1; fpm run
 
 build: 
 	@cd ./src/static/; \
