@@ -1,0 +1,130 @@
+reliable: 
+  - responsible
+responsible: 
+  - reliable
+  - self control
+self control:
+  - responsible
+  - moderation
+  - determination
+  - endurance
+  - patience
+moderation:
+  - self control
+determination:
+  - self control
+patience:
+  - endurance
+  - self control
+  - humility
+  - empathy
+endurance:
+  - hope
+  - self control
+  - patience
+  - joy
+  - resilience
+  - faithfulness
+  - loyalty
+  - humility
+resilience:
+  - endurance
+  - tenacity
+faithfulness:
+  - courage
+  - endurance
+tenacity:
+  - resilience
+courage:
+  - faithfulness
+hope:
+  - endurance
+joy:
+  - endurance
+loyalty:
+  - endurance
+empathy:
+  - patience
+  - kindness
+  - compassion
+kindness:
+  - empathy
+compassion:
+  - empathy
+  - authenticity
+  - pity
+  - mercy
+  - reasonableness
+pity:
+  - compassion
+authenticity:
+  - compassion
+mercy:
+  - compassion
+  - forgiveness
+  - justice
+forgiveness:
+  - mercy
+justice:
+  - mercy
+  - impartiality
+  - wisdom
+  - righteousness
+wisdom:
+  - justice
+impartiality:
+  - justice
+righteousness:
+  - justice
+  - integrity
+integrity:
+  - righteousness
+reasonableness:
+  - compassion
+  - modesty
+modesty:
+  - reasonableness
+  - humility
+humility:
+  - modesty
+  - patience
+  - endurance
+  - mildness
+  - respect
+  - positivity
+  - acceptance
+  - honesty
+mildness:
+  - humility
+respect:
+  - humility
+positivity:
+  - humility
+acceptance:
+  - humility
+  - contentment
+honesty:
+  - humility
+  - self respect
+  - accountable
+  - trustworthy
+self respect:
+  - honesty
+accountable:
+  - honesty
+trustworthy:
+  - honesty
+contentment: 
+  - acceptance
+  - gratitude
+gratitude:
+  - contentment
+  - appreciation
+  - generosity
+generosity:
+  - gratitude
+  - hospitality
+hospitality:
+  - generosity
+appreciation:
+  - gratitude

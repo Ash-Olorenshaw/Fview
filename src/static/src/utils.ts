@@ -16,3 +16,7 @@ export function rand_sign() : number {
 	return result != 0 ? result : rand_sign()
 }
 
+export function raise_err(msg : string) {
+	alert(msg)
+	throw msg
+}
