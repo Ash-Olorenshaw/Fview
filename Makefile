@@ -34,6 +34,7 @@ prepare:
 	mkdir ./libs
 	cp ./include/webview/build/core/libwebview.so.0.12 ./
 	cp ./include/webview/build/core/libwebview.so ./libs/
+	cp ./include/webview/build/core/libwebview.so ./
 	cp ./include/webview/build/core/libwebview.a ./libs/
 
 	@echo "Run 'make build' to regenerate './build'"
