@@ -18,8 +18,11 @@ function test_quality_connections() {
 	for (const quality in qualities) {
 		const quality_children = qualities[quality]
 		for (const quality_child of quality_children) {
-			if (!qualities[quality_child].includes(quality)) {
-				raise_err(`Please ensure all qualities reference each other. Quality '${quality}' references quality '${quality_child}', but '${quality_child}' does not reference '${quality}' in return.`)
+			if (!(quality_child in qualities)) {
+				raise_err(`Error - Missing quality '${quality_child}' referenced by quality '${quality}'`)
+			}
+			else if (!qualities[quality_child].includes(quality)) {
+				raise_err(`Error - Please ensure all qualities reference each other. Quality '${quality}' references quality '${quality_child}', but '${quality_child}' does not reference '${quality}' in return.`)
 			}
 		}
 	}
