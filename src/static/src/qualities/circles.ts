@@ -1,14 +1,16 @@
 import { sort_qualities } from "./common"
-import { qualities, quality_positions } from "../globals"
+import { qualities, quality_parent, quality_positions, svg_parent } from "../globals"
 import { calc_midpoint, type Pt } from "../graphing"
 import { string_to_color } from "../utils"
+import van from "vanjs-core"
+
+const { div } = van.tags
 
 let furthest_x = 0
 let furthest_y = 0
 const quality_stack = sort_qualities()
 
 function add_quality_pos(qual : string, pos : Pt) : void {
-	console.log(`ADDING QUALITY: ${qual} (${pos.x}, ${pos.y})`)
 	quality_positions[qual] = pos
 	if (pos.x > furthest_x)
 		furthest_x = pos.x
@@ -24,12 +26,22 @@ function quality_pos_exists(pos : Pt) : boolean {
 	})
 }
 
+const QualityTag = (
+	{ text, radius, color } : { text : string, radius : number, color : string }
+) => div(
+	{ 
+		style: `width: ${radius * 2}px; height: ${radius * 2}px; background-color: ${color};`,
+		class: "quality-tag"
+	},
+	text
+)
+
 export function generate_quality_circles() {
+	if (!quality_parent)
+		return
+
 	furthest_x = 0
 	furthest_y = 0
-
-	const quality_parent = document.querySelector<HTMLDivElement>("#app")
-	const svg_parent = document.querySelector<HTMLElement & SVGElement>("#app-svg")
 
 	let skipped_loop = 0
 
@@ -39,20 +51,14 @@ export function generate_quality_circles() {
 			break
 
 		const quality_children = qualities[quality]
-		const quality_tag = document.createElement("div")
 		const tag_radius = (quality_children.length + 1) * 50
+		const quality_tag = QualityTag({ 
+			text : quality, 
+			radius : tag_radius, 
+			color : string_to_color(quality) 
+		})
 
-		quality_tag.textContent = quality
-		quality_parent?.appendChild(quality_tag)
-
-		quality_tag.style.borderRadius = "100%" 
-		quality_tag.style.width = `${tag_radius * 2}px` 
-		quality_tag.style.height = `${tag_radius * 2}px` 
-		quality_tag.style.opacity = "0.5"
-		quality_tag.style.position = "absolute"
-		quality_tag.style.alignContent = "center"
-		quality_tag.style.textAlign = "center"
-		quality_tag.style.backgroundColor = string_to_color(quality)
+		van.add(quality_parent, quality_tag)
 
 		const relation_pts : Pt[] = []
 		for (const quality_child of quality_children) {
@@ -80,7 +86,6 @@ export function generate_quality_circles() {
 			let mid_point = calc_midpoint(relation_pts)
 			
 			if (quality_pos_exists(mid_point)) {
-				console.log(`updating midpoint (${mid_point.x}, ${mid_point.y})`)
 				relation_pts.push(quality_positions[quality_position_names[Math.floor(Math.random() * quality_position_names.length)]])
 				mid_point = calc_midpoint(relation_pts)
 				console.log(`\t->(${mid_point.x}, ${mid_point.y})`)
@@ -107,8 +112,6 @@ export function generate_quality_circles() {
 	}
 
 	if (quality_parent && svg_parent) {
-		quality_parent.style.width = `${furthest_x}px`
-		quality_parent.style.height = `${furthest_y}px`
 		svg_parent.style.width = `${furthest_x}px`
 		svg_parent.style.height = `${furthest_y}px`
 	}
