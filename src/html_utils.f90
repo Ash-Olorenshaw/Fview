@@ -10,12 +10,12 @@ contains
 
         io_success = .true.
 
-        html_str = get_file_str("./src/index.html", success = io_success)
+        html_str = get_file_str("./index.html", success = io_success)
         if (.not. io_success) then
             print *, "Err - unable to read file 'index.html' to launch program"
             call exit(1)
         end if
-        yaml_str = get_file_str("./src/qualities.yaml", success = io_success)
+        yaml_str = get_file_str("./qualities.yaml", success = io_success)
         if (.not. io_success) then
             print *, "Err - unable to read file 'qualities.yaml' to launch program"
             call exit(1)

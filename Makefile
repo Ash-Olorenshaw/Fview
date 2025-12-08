@@ -5,14 +5,14 @@ run:
 	@cd ./javascript/ && \
 		npm run build
 
-	cp ./javascript/dist/index.html ./src/index.html
+	cp ./javascript/dist/index.html ./index.html
 	fpm build --link-flag "-L./libs -lstdc++ -lgcc -lgcc_s $$(pkg-config --libs gtk+-3.0 webkit2gtk-4.0) -static-libgfortran"
 	export WEBKIT_DISABLE_DMABUF_RENDERER=1; fpm run
 
 build: 
 	@cd ./javascript/ && \
 		npm run build
-	cp ./javascript/dist/index.html ./src/index.html
+	cp ./javascript/dist/index.html ./index.html
 
 	fpm build --link-flag "-L./libs -lstdc++ -lgcc -lgcc_s $$(pkg-config --libs gtk+-3.0 webkit2gtk-4.0) -static-libgfortran"
 
