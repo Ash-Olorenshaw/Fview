@@ -1,4 +1,4 @@
-export function string_to_color(target : string) {
+export function string_to_color(target : string) : string {
 	let hash = 0
 	target.split("").forEach(char => {
 		hash = char.charCodeAt(0) + ((hash << 5) - hash)
@@ -16,7 +16,7 @@ export function rand_sign() : number {
 	return result != 0 ? result : rand_sign()
 }
 
-export function raise_err(msg : string) {
+export function raise_err(msg : string) : void {
 	alert(msg)
 	throw msg
 }

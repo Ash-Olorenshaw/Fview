@@ -1,10 +1,11 @@
 import { sort_qualities } from "./common"
-import { qualities, quality_parent, quality_positions, svg_parent } from "../globals"
+import { Globals, qualities, quality_parent, quality_positions, svg_parent } from "../globals"
 import { calc_midpoint, type Pt } from "../graphing"
-import { string_to_color } from "../utils"
+import { rand_sign, string_to_color } from "../utils"
 import van from "vanjs-core"
+import { open_side_panel } from "../sidepanel"
 
-const { div } = van.tags
+const { div, button } = van.tags
 
 let furthest_x = 0
 let furthest_y = 0
@@ -20,9 +21,17 @@ function add_quality_pos(qual : string, pos : Pt) : void {
 	quality_stack.pop()
 }
 
+function offset_midpoint(pos : Pt) : void {
+	const left = rand_sign() * Math.random() 
+	const top = rand_sign() * Math.random() 
+	
+	pos.x += left * 200
+	pos.y += top * 200
+}
+
 function quality_pos_exists(pos : Pt) : boolean {
 	return Object.values(quality_positions).some((val : Pt) => {
-		return Math.abs(pos.x - val.x) < 20 && Math.abs(pos.y - val.y) < 20
+		return Math.hypot(pos.x - val.x, pos.y - val.y) < 100
 	})
 }
 
@@ -30,10 +39,26 @@ const QualityTag = (
 	{ text, radius, color } : { text : string, radius : number, color : string }
 ) => div(
 	{ 
-		style: `width: ${radius * 2}px; height: ${radius * 2}px; background-color: ${color};`,
+		style: `width: ${radius * 2}px; height: ${radius * 2}px; background-color: ${color + "55"};`,
 		class: "quality-tag"
 	},
-	text
+	button(
+		{ 
+			onclick: async () => { 
+				const { result, success } = await window.getQualityText(text) 
+				if (success)
+					open_side_panel(result)
+				else
+					alert(`Error - Unable to find file '${text}.md'`)
+			},
+			class: "quality-tag-button",
+			style: () => {
+				const size_mod : number = 2 - (Globals.page_zoom.val * 0.75)
+				return `font-size: ${ size_mod }rem; padding: ${ 10 * size_mod }px;` 
+			}
+		},
+		text
+	)
 )
 
 export function generate_quality_circles() {
@@ -85,10 +110,8 @@ export function generate_quality_circles() {
 
 			let mid_point = calc_midpoint(relation_pts)
 			
-			if (quality_pos_exists(mid_point)) {
-				relation_pts.push(quality_positions[quality_position_names[Math.floor(Math.random() * quality_position_names.length)]])
-				mid_point = calc_midpoint(relation_pts)
-				console.log(`\t->(${mid_point.x}, ${mid_point.y})`)
+			while (quality_pos_exists({ x : (mid_point.x + tag_radius), y : (mid_point.y + tag_radius) })) {
+				offset_midpoint(mid_point)
 			}
 
 			quality_tag.style.left = `${mid_point.x}px`

@@ -43,9 +43,42 @@ body {
 
 .quality-tag {
 	border-radius: 100%; 
-	opacity: 0.5;
 	position : absolute;
 	align-content : center;
 	text-align: center;
 	user-select : none;
+	pointer-events: none;
+}
+
+.quality-tag-button {
+	border: none;
+	background: none;
+	color: black;
+	cursor: pointer;
+	pointer-events: auto;
+	border-radius: 0;
+
+	&:focus-visible {
+		border: 1px solid black;
+		outline: none;
+	}
+
+	&:hover {
+		border: 1px solid black;
+	}
+
+	&:active {
+		border: 2px solid black;
+	}
+}
+
+#side-panel {
+	position: absolute;
+	right: 5%;
+	height: 80%;
+	width: 30%;
+	background-color: white;
+	border: 1px solid black;
+	border-radius: 5px;
+	padding: 2.5%;
 }

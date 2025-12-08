@@ -5,17 +5,17 @@ const { div, button } = van.tags
 function zoom(dir : number) {
 	if (quality_parent) {
 		if (dir > 0) {
-			if (Globals.page_zoom < 2) {
-				Globals.page_zoom += 0.1
+			if (Globals.page_zoom.val < 2) {
+				Globals.page_zoom.val += 0.1
 			}
 		}
 		else {
-			if (Globals.page_zoom > 0.5) {
-				Globals.page_zoom -= 0.1
+			if (Globals.page_zoom.val > 0.5) {
+				Globals.page_zoom.val -= 0.1
 			}
 		}
 
-		quality_parent.style.zoom = `${Globals.page_zoom}`
+		quality_parent.style.zoom = `${Globals.page_zoom.val}`
 	}
 }
 

@@ -9,6 +9,14 @@ module webview
     integer(c_int), parameter :: WEBVIEW_HINT_MAX    = 2
     integer(c_int), parameter :: WEBVIEW_HINT_FIXED= 3
 
+    abstract interface
+        subroutine c_bind_callback(seq, req, arg) bind(c)
+            import :: c_char, c_ptr
+            character(kind=c_char) :: seq(*), req(*)
+            type(c_ptr), value     :: arg
+        end subroutine
+    end interface
+
     interface
         ! webview_t webview_create(int debug, void* window)
         function c_webview_create(debug, window) result(w) bind(c, name='webview_create')
@@ -62,6 +70,24 @@ module webview
             type(c_ptr), value :: w
             character(kind=c_char) :: url(*)
         end subroutine
+        ! void webview_bind(webview_t w, const char* name,
+        !                   void (*fn)(const char*, const char*, void*), void* arg)
+        subroutine c_webview_bind(w, name, fn, arg) bind(c, name='webview_bind')
+            import :: c_ptr, c_char, c_funptr
+            type(c_ptr), value      :: w
+            character(kind=c_char)  :: name(*)
+            type(c_funptr), value   :: fn
+            type(c_ptr), value      :: arg
+        end subroutine
+
+        ! void webview_return(webview_t w, const char* seq, int status, const char* result)
+        subroutine c_webview_return(w, seq, status, result) bind(c, name='webview_return')
+            import :: c_ptr, c_char, c_int
+            type(c_ptr), value      :: w
+            character(kind=c_char)  :: seq(*)
+            integer(c_int), value  :: status
+            character(kind=c_char)  :: result(*)
+        end subroutine
     end interface
 contains
     subroutine webview_create(debug, w)
@@ -90,5 +116,25 @@ contains
         character(len=*), intent(in) :: html
 
         call c_webview_set_html(w, html//c_null_char)
+    end subroutine
+        
+    ! Bind a Fortran procedure to a JavaScript function name.
+    ! The callback must have the abstract interface c_bind_callback.
+    subroutine webview_bind(w, name, callback, user_data)
+        type(c_ptr), intent(in) :: w
+        character(len=*), intent(in) :: name
+        type(c_funptr), intent(in) :: callback
+        type(c_ptr), intent(in), optional :: user_data
+        call c_webview_bind(w, trim(name)//c_null_char, callback, merge(user_data, c_null_ptr, present(user_data)))
+    end subroutine
+
+    ! Return a value to JavaScript after processing a bound call.
+    ! seq is the request identifier supplied to the callback.
+    subroutine webview_return_result(w, seq, status, result)
+        type(c_ptr), intent(in) :: w
+        character(len=*), intent(in) :: seq
+        integer(c_int), intent(in) :: status
+        character(len=*), intent(in) :: result
+        call c_webview_return(w, trim(seq)//c_null_char, status, trim(result)//c_null_char)
     end subroutine
 end module webview

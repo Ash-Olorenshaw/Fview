@@ -30,3 +30,4 @@ source-form = "free"
 
 [dependencies]
 stdlib = "*"
+json-fortran = { git = "https://github.com/jacobwilliams/json-fortran.git", branch = "master" }

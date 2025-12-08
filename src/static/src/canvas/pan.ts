@@ -19,8 +19,8 @@ export function setup_pan() {
 
 	document.addEventListener("mousemove", (e : MouseEvent) => {
 		if (quality_parent && mouse_state) {
-			let delta_x = (e.pageX - mouse_state.x) / Globals.page_zoom
-			let delta_y = (e.pageY - mouse_state.y) / Globals.page_zoom
+			let delta_x = (e.pageX - mouse_state.x) / Globals.page_zoom.val
+			let delta_y = (e.pageY - mouse_state.y) / Globals.page_zoom.val
 
 			const offset = { x: quality_parent.scrollLeft, y : quality_parent.scrollTop }
 			quality_parent.scroll(offset.x - delta_x, offset.y - delta_y)
