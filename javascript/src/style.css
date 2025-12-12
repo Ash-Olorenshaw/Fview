@@ -82,3 +82,63 @@ body {
 	border-radius: 5px;
 	padding: 2.5%;
 }
+
+a {
+    color: #2292A4;
+    text-decoration-thickness: 1.5px;
+
+    &:hover {
+        color: #003049;
+        text-decoration-thickness: 2px;
+    }
+}
+
+.settings-gear {
+	width: 30px;
+	height: 30px;
+	background-color: #8c8c8c;
+	border-radius: 15%;
+	position: relative;
+
+	&::before {
+		background-color: #8c8c8c;
+		content: "";
+		position: absolute;
+		width: 30px;
+		height: 30px;
+		transform: rotate(45deg);
+		border-radius: 15%;
+		left: 0;
+		top: 0;
+	}
+
+	&::after {
+		width: 40%;
+		height: 40%;
+		position: absolute;
+		background-color: white;
+		content: "";
+		left: 32.5%;
+		top: 32.5%;
+		border-radius: 100%;
+	}
+}
+
+.settings-button {
+	border: 1px solid black;
+	background: white;
+	margin: 5px;
+	cursor: pointer;
+	position: relative;
+	padding: 7.5px;
+
+	&:active {
+		margin: 7.5px;
+		width: 45px;
+		height: 45px;
+	}
+
+	&:hover {
+		background-color: gold;
+	}
+}

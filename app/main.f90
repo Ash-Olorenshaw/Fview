@@ -5,14 +5,17 @@ program qualities_view
     implicit none
 
     procedure(bind_callback), pointer :: get_quality_text_ptr
-    get_quality_text_ptr => get_quality_text
+    procedure(bind_callback), pointer :: open_external_link_ptr
 
+    get_quality_text_ptr => get_quality_text
+    open_external_link_ptr => open_external_link
 
     call webview_create(.true., w) ! NOTE TO SELF: first arg is 'inspect element' on/off
     call webview_set_title(w, "Qualities")
     call c_webview_set_size(w, 800_c_int, 600_c_int, WEBVIEW_HINT_NONE)
 
     call webview_bind(w, "getQualityText", c_funloc(get_quality_text_ptr), c_null_ptr)
+    call webview_bind(w, "openExternalLink", c_funloc(open_external_link_ptr), c_null_ptr)
 
     call webview_set_html(w, resolve_html_str())
     call c_webview_run(w)

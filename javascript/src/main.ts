@@ -3,6 +3,7 @@ import { generate_quality_lines } from './qualities/lines'
 import './style.css'
 import { setup_zoom } from './canvas/zoom'
 import { setup_pan } from './canvas/pan'
+import { setup_href_redirect } from './link_utils'
 
 /* function calc_tag_pos(childDeg : number, tagRadius : number) {
 	const rad = (childDeg * Math.PI) / 180
@@ -13,6 +14,7 @@ import { setup_pan } from './canvas/pan'
 
 setup_zoom()
 setup_pan()
+setup_href_redirect()
 generate_quality_circles()
 generate_quality_lines()
 

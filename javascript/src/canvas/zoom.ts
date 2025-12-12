@@ -1,5 +1,6 @@
 import van from "vanjs-core";
 import { Globals, quality_parent } from "../globals";
+import { SettingsButton } from "../settings";
 const { div, button } = van.tags
 
 function zoom(dir : number) {
@@ -21,9 +22,25 @@ function zoom(dir : number) {
 
 export function setup_zoom() {
 	const ZoomButtons = () => div(
-		{ style: "display: flex; flex-direction: column; position: absolute; right: 0; bottom: 0;" },
-		button({ onclick: () => zoom(1), class: "zoom-button" }, "+"),
-		button({ onclick: () => zoom(-1), class: "zoom-button" }, "-")
+		{ 
+			style: "display: flex; flex-direction: row; position: absolute; right: 0; bottom: 0;", 
+			id : "zoom-buttons"
+		},
+		div(
+			{ 
+				style: "display: flex; flex-direction: column;", 
+				id : "zoom-buttons"
+			},
+			button({ onclick: () => zoom(1), class: "zoom-button" }, "+"),
+			button({ onclick: () => zoom(-1), class: "zoom-button" }, "-")
+		),
+		div(
+			{ 
+				style: "align-self: end;", 
+				id : "zoom-buttons"
+			},
+			SettingsButton()
+		)
 	)
 
 	van.add(document.body, ZoomButtons())

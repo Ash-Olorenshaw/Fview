@@ -2,7 +2,7 @@ import { parse } from "marked";
 import van from "vanjs-core";
 const { div, button } = van.tags
 
-const SidePanelCloseButton = () => button(
+export const SidePanelCloseButton = () => button(
 	{ 
 		style: "position: absolute; right: 10px; top: 10px;",
 		onclick: close_side_panel,
