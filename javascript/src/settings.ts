@@ -1,9 +1,13 @@
 import van from "vanjs-core";
 import { close_side_panel, SidePanelCloseButton } from "./sidepanel";
-const { div, button } = van.tags
+import { raise_err } from "./utils";
+const { div, button, h1 } = van.tags
 
 export const SettingsButton = () => button(
-	{ class: "settings-button" }, 
+	{ 
+		class: "settings-button",
+		onclick : open_settings
+	}, 
 	div(
 		{ class : "settings-gear" }
 	)
@@ -19,7 +23,23 @@ export async function open_settings() {
 			{ 
 				id: "side-panel",
 			},
-			SidePanelCloseButton()
+			SidePanelCloseButton({}),
+			div(
+				h1(
+					"Settings"
+				),
+				button(
+					{ 
+						class : "normal-button",
+						onclick: async () => {
+							const { success, success_reason } = await window.openQualitiesDir()
+							if (!success)
+								raise_err(success_reason)
+						} 
+					},
+					"Open qualities folder"
+				)
+			)
 		)
 
 		van.add(document.body, SidePanel())

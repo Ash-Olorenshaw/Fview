@@ -8,9 +8,9 @@ contains
         character(:), allocatable :: file_content
         logical :: exists
 
+        print *, "GETTING FILE", file_target
 
         inquire(file=file_target, SIZE=file_size, iostat=iostat, exist=exists)
-        print *, iostat
         if (iostat /= 0 .or. .not. exists) then
             success = .false.
             file_content = ""
@@ -30,17 +30,31 @@ contains
 
     function get_sys_conf_folder() result(path)
         use stdlib_system, only: OS_TYPE, OS_MACOS, OS_WINDOWS, OS_LINUX
+        use system_utils, only: dir_exists
 
-        character(:), allocatable :: path, home_dir
+        character(:), allocatable :: path
+        character(255) :: home_dir
         integer :: os
 
         os = OS_TYPE()
         if (os == OS_WINDOWS) then
             call get_environment_variable("userprofile", value=home_dir)
-            path = home_dir // "\AppData\Local\QualitiesExplorer"
+            path = trim(home_dir) // "\AppData\Local\QualitiesExplorer"
         else
             call get_environment_variable("HOME", value=home_dir)
-            path = home_dir // "/.config/QualitiesExplorer"
+            path = trim(home_dir) // "/.config/QualitiesExplorer"
+        end if
+
+        if (.not. dir_exists(path)) then
+            call create_dir(path)
         end if
     end function
+
+    subroutine create_dir(dir)
+        character(:), allocatable, intent(in) :: dir
+        character(:), allocatable :: cmd
+
+        cmd = "mkdir """ // dir // """"
+        call execute_command_line(cmd)
+    end subroutine
 end module file_utils

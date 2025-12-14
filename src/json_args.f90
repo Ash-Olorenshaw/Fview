@@ -12,7 +12,6 @@ contains
 
         call json_in%initialize()
         call json_in%deserialize("{ ""data"": " // c_string_to_f_string(req) // "}")
-        call json_in%print()
         call json_in%get("data", args, ilen = args_len)
         call json_in%destroy()
     end subroutine gather_args

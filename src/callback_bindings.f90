@@ -33,7 +33,7 @@ contains
 
         call gather_args(req, input_str_array, input_str_array_len)
 
-        file_str = get_sys_conf_folder() // "/qualities/" // input_str_array(1) // ".md"
+        file_str = get_sys_conf_folder() // "/" // input_str_array(1) // ".md"
         md_str = get_file_str(file_str, success = md_str_success)
 
         call json_out%create_object(root, "")
@@ -42,17 +42,17 @@ contains
         call json_out%serialize(root, json_str)
         call json_out%destroy(root)
         call webview_return_result(w, c_string_to_f_string(seq), 0, json_str)
-    end subroutine get_quality_text
+    end subroutine
 
-    subroutine open_external_link(seq, req, arg) bind(c)
+    subroutine system_open_callback(seq, req, arg) bind(c)
         use file_utils, only: get_file_str
+        use system_utils, only: system_open
         use json_file_module
         use json_module
-        use system_utils, only: open_browser
 
         character(kind=c_char), intent(in) :: seq(*), req(*)
         type(c_ptr), intent(in), value :: arg
-        character(len=:), allocatable :: cmd, success_reason, json_str, cmd_msg, url
+        character(len=:), allocatable :: success_reason, json_str, url
         character(len=:), dimension(:), allocatable :: input_str_array
         integer, dimension(:), allocatable :: input_str_array_len
         type(json_core) :: json_out
@@ -65,7 +65,7 @@ contains
 
         call gather_args(req, input_str_array, input_str_array_len)
         url = input_str_array(1)
-        call open_browser(url, success=success, success_reason=success_reason)
+        call system_open(url, success=success, success_reason=success_reason)
 
         call json_out%create_object(root, "")
         call json_out%add(root, "success_reason", success_reason)
@@ -74,5 +74,69 @@ contains
         call json_out%destroy(root)
 
         call webview_return_result(w, c_string_to_f_string(seq), 0, json_str)
-    end subroutine open_external_link
+    end subroutine
+
+    subroutine open_qualities_callback(seq, req, arg) bind(c)
+        use file_utils, only: get_file_str, get_sys_conf_folder
+        use system_utils, only: system_open
+        use json_file_module
+        use json_module
+
+        character(kind=c_char), intent(in) :: seq(*), req(*)
+        type(c_ptr), intent(in), value :: arg
+        character(len=:), allocatable :: success_reason, json_str, path
+        character(len=:), dimension(:), allocatable :: input_str_array
+        integer, dimension(:), allocatable :: input_str_array_len
+        type(json_core) :: json_out
+        type(json_value), pointer :: root => null()
+        integer :: os
+        logical :: success
+
+        success = .true.
+        success_reason = ""
+
+        path = get_sys_conf_folder()
+        call system_open(path, success=success, success_reason=success_reason)
+
+        call json_out%create_object(root, "")
+        call json_out%add(root, "success_reason", success_reason)
+        call json_out%add(root, "success", success)
+        call json_out%serialize(root, json_str)
+        call json_out%destroy(root)
+
+        call webview_return_result(w, c_string_to_f_string(seq), 0, json_str)
+    end subroutine
+
+    subroutine open_quality_file_callback(seq, req, arg) bind(c)
+        use file_utils, only: get_file_str, get_sys_conf_folder
+        use system_utils, only: system_open
+        use json_file_module
+        use json_module
+
+        character(kind=c_char), intent(in) :: seq(*), req(*)
+        type(c_ptr), intent(in), value :: arg
+        character(len=:), allocatable :: success_reason, json_str, path, file
+        character(len=:), dimension(:), allocatable :: input_str_array
+        integer, dimension(:), allocatable :: input_str_array_len
+        type(json_core) :: json_out
+        type(json_value), pointer :: root => null()
+        integer :: os
+        logical :: success
+
+        success = .true.
+        success_reason = ""
+
+        call gather_args(req, input_str_array, input_str_array_len)
+        file = input_str_array(1)
+        path = get_sys_conf_folder() // "/" // file
+        call system_open(path, success=success, success_reason=success_reason)
+
+        call json_out%create_object(root, "")
+        call json_out%add(root, "success_reason", success_reason)
+        call json_out%add(root, "success", success)
+        call json_out%serialize(root, json_str)
+        call json_out%destroy(root)
+
+        call webview_return_result(w, c_string_to_f_string(seq), 0, json_str)
+    end subroutine
 end module callback_bindings

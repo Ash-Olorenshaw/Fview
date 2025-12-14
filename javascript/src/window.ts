@@ -2,6 +2,8 @@
 declare global {
     interface Window {
         getQualityText: ((file : string) => Promise<{ result : string, success : boolean }>);
-        openExternalLink: ((href : string) => Promise<{ success : boolean, success_reason : string }>);
+        systemOpen: ((link : string) => Promise<{ success : boolean, success_reason : string }>);
+		openQualitiesDir : (() => Promise<{ success : boolean, success_reason : string }>)
+		openQualityFile : ((file : string) => Promise<{ success : boolean, success_reason : string }>)
 	}
 }

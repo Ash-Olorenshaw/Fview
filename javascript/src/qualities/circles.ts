@@ -47,7 +47,7 @@ const QualityTag = (
 			onclick: async () => { 
 				const { result, success } = await window.getQualityText(text) 
 				if (success)
-					open_side_panel(result)
+					open_side_panel(result, `${text}.md`)
 				else
 					alert(`Error - Unable to find file '${text}.md'`)
 			},
@@ -76,7 +76,7 @@ export function generate_quality_circles() {
 			break
 
 		const quality_children = qualities[quality]
-		const tag_radius = (quality_children.length + 1) * 50
+		const tag_radius = (quality_children.length + 1) * 25 // 50
 		const quality_tag = QualityTag({ 
 			text : quality, 
 			radius : tag_radius, 
@@ -110,7 +110,7 @@ export function generate_quality_circles() {
 
 			let mid_point = calc_midpoint(relation_pts)
 			
-			while (quality_pos_exists({ x : (mid_point.x + tag_radius), y : (mid_point.y + tag_radius) })) {
+			while (quality_pos_exists({ x : (mid_point.x + tag_radius), y : (mid_point.y + tag_radius) }) || mid_point.x < 20 || mid_point.y < 20) {
 				offset_midpoint(mid_point)
 			}
 
